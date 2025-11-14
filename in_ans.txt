@@ -1,0 +1,83 @@
+# Python Integer Literal Test Cases
+# Format: input_string expected_result (accept/reject)
+
+# Decimal integers (Part 1)
+0 accept
+1 accept
+9 accept
+10 accept
+99 accept
+123 accept
+456789 accept
+1234567890 accept
+00 accept
+000 accept
+
+# Invalid decimal - leading zero with non-zero digit
+01 reject
+012 reject
+0123 reject
+09 reject
+
+# Octal integers (Part 2)
+0o0 accept
+0o1 accept
+0o7 accept
+0o10 accept
+0o77 accept
+0o123 accept
+0o777 accept
+0O0 accept
+0O7 accept
+0O77 accept
+
+# Invalid octal
+0o reject
+0O reject
+0o8 reject
+0o9 reject
+0oabc reject
+0o18 reject
+
+# Hexadecimal integers (Part 2)
+0x0 accept
+0x1 accept
+0x9 accept
+0xa accept
+0xf accept
+0xA accept
+0xF accept
+0x10 accept
+0xff accept
+0xFF accept
+0xAB accept
+0xDeadBeef accept
+0xCAFE accept
+0X0 accept
+0X1 accept
+0XFF accept
+
+# Invalid hexadecimal
+0x reject
+0X reject
+0xg reject
+0xG reject
+0x1g reject
+
+# Edge cases
+123456789012345678901234567890 accept
+0x123456789ABCDEF accept
+0o01234567 accept
+
+# Invalid inputs
+abc reject
+-1 reject
++1 reject
+1.0 reject
+1e10 reject
+0b101 reject
+0b0 reject
+reject
+x123 reject
+o123 reject
+0xG reject
