@@ -42,9 +42,7 @@ class IntegerNFA:
         self.start_state = 'start'
 
     def recognize(self, input_string):
-
-       # Check if valid Python string literal
-
+        # Check if valid Python string literal
         if not input_string:
             return False, None
 
@@ -75,10 +73,100 @@ class IntegerNFA:
         return False, None
 
 
+# ----------------------------------------------------------------------
+#                  FLOAT LITERAL RECOGNIZER (EXTRA PART)
+# ----------------------------------------------------------------------
+
+def _valid_digitpart(s: str) -> bool:
+    """
+    digitpart = digit ( '_' digit )*
+    Simple checker for decimal digit groups with underscores between digits only.
+    """
+    if not s:
+        return False
+    if s[0] == "_" or s[-1] == "_" or "__" in s:
+        return False
+    for ch in s:
+        if not (ch.isdigit() or ch == "_"):
+            return False
+    return True
+
+
+def _valid_exponent(exp: str) -> bool:
+    """
+    exponent = (e|E) ['+'|'-'] digitpart
+    Here we only receive the part AFTER the 'e'/'E'.
+    """
+    if not exp:
+        return False
+    if exp[0] in "+-":
+        exp = exp[1:]
+    return _valid_digitpart(exp)
+
+
+def is_float_literal(s: str) -> bool:
+    """
+    Implements Python floatnumber (simplified but spec-like):
+
+      floatnumber:
+        | digitpart "." [digitpart] [exponent]
+        | "." digitpart [exponent]
+        | digitpart exponent
+
+    exponent = (e|E) ['+'|'-'] digitpart
+    digitpart = digit ( '_' digit )*
+    """
+    if not s:
+        return False
+
+    # find exponent separator if any
+    exp_idx = -1
+    for i, ch in enumerate(s):
+        if ch in "eE":
+            exp_idx = i
+            break
+
+    if exp_idx != -1:
+        base = s[:exp_idx]
+        exp = s[exp_idx + 1:]
+        if not _valid_exponent(exp):
+            return False
+    else:
+        base = s
+
+    # dotted cases
+    if "." in base:
+        if base.count(".") > 1:
+            return False
+        before, after = base.split(".", 1)
+
+        # "." alone is invalid
+        if not before and not after:
+            return False
+
+        if before and not _valid_digitpart(before):
+            return False
+        if after and not _valid_digitpart(after):
+            return False
+
+        return True  # exponent already checked if present
+
+    # no dot in base => must be digitpart + exponent (like "1e10")
+    else:
+        if exp_idx == -1:
+            return False
+        return _valid_digitpart(base)
+
+
+# ----------------------------------------------------------------------
+#                      FILE-BASED TESTING
+# ----------------------------------------------------------------------
+
 def process_test_file(input_filename, output_filename):
     """
     Process test file in format: "input_string expected_result"
-    Write results to output file with pass/fail indication
+    Write results to output file with pass/fail indication.
+    Now supports integers AND floats.
     """
     nfa = IntegerNFA()
 
@@ -91,7 +179,6 @@ def process_test_file(input_filename, output_filename):
             if not line or line.startswith('#'):
                 continue
 
-            # Parse input: "string expected_result"
             parts = line.split()
             if len(parts) < 2:
                 continue
@@ -99,23 +186,34 @@ def process_test_file(input_filename, output_filename):
             test_input = parts[0]
             expected = parts[1].lower()  # 'accept' or 'reject'
 
+            # First try the integer NFA
             is_valid, literal_type = nfa.recognize(test_input)
+
+            # If not an integer, try float (extra part)
+            if not is_valid and is_float_literal(test_input):
+                is_valid = True
+                literal_type = 'floatnumber'
+
             actual = 'accept' if is_valid else 'reject'
             result = 'PASS' if actual == expected else 'FAIL'
-
             type_str = literal_type if literal_type else 'N/A'
 
             outfile.write(f"{test_input}\t{expected}\t{actual}\t{type_str}\t{result}\n")
 
 
+# ----------------------------------------------------------------------
+#                         INTERACTIVE MODE
+# ----------------------------------------------------------------------
+
 def interactive_mode():
     """
-    Interactive mode for testing individual strings
+    Interactive mode for testing individual strings.
+    Now recognizes: decinteger, octinteger, hexinteger, floatnumber.
     """
     nfa = IntegerNFA()
-    print("Python Integer Literal Recognizer")
+    print("Python Numerical Literal Recognizer")
     print("=" * 50)
-    print("Recognizes: decinteger, octinteger, hexinteger")
+    print("Recognizes: decinteger, octinteger, hexinteger, floatnumber")
     print("Enter 'quit' to exit\n")
 
     while True:
@@ -126,12 +224,21 @@ def interactive_mode():
 
         is_valid, literal_type = nfa.recognize(user_input)
 
+        # Try float if not integer
+        if not is_valid and is_float_literal(user_input):
+            is_valid = True
+            literal_type = 'floatnumber'
+
         if is_valid:
             print(f"✓ ACCEPT - Valid {literal_type}")
         else:
-            print(f"✗ REJECT - Not a valid integer literal")
+            print(f"✗ REJECT - Not a valid numeric literal")
         print()
 
+
+# ----------------------------------------------------------------------
+#                              MAIN
+# ----------------------------------------------------------------------
 
 def main():
     import sys

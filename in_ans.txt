@@ -1,4 +1,4 @@
-# Python Integer Literal Test Cases
+# Python Numeric Literal Test Cases
 # Format: input_string expected_result (accept/reject)
 
 # Decimal integers (Part 1)
@@ -69,15 +69,42 @@
 0x123456789ABCDEF accept
 0o01234567 accept
 
-# Invalid inputs
+# Invalid inputs (still invalid even after adding floats)
 abc reject
 -1 reject
 +1 reject
-1.0 reject
-1e10 reject
 0b101 reject
 0b0 reject
 reject
 x123 reject
 o123 reject
-0xG reject
+
+# Floating-point literals (Extra part)
+
+# Valid floats
+1.0 accept
+1. accept
+.5 accept
+0.5 accept
+10.0 accept
+123.456 accept
+0.0001 accept
+1e10 accept
+1e0 accept
+1E10 accept
+1.5e3 accept
+1.5e-3 accept
+1.E+3 accept
+0.5e-2 accept
+.25e4 accept
+
+# Invalid floats
+. reject
+1e reject
+e10 reject
+1._0 reject
+1__0 reject
+._5 reject
++.5 reject
+-1.0 reject
+1.0.0 reject
