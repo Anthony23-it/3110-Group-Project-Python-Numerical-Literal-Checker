@@ -23,3 +23,6 @@ You need **Python 3** installed.
 
 ```bash
 python pt12.py
+
+This project includes an extra-credit extension that adds full support for recognizing Python floating-point literals according to the Python 3 lexical specification.
+This portion of the project was implemented by Hoai Nam Nguyen.
