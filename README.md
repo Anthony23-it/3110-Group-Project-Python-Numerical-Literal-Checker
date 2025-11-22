@@ -1,28 +1,116 @@
 # 3110 Group Project – Python Numerical Literal Checker
 
-## Overview
+1. Henry Nguyen
 
-This project is for **CS 3110** and implements a numerical literal checker based on the
-Python 3 lexical specification. It recognizes:
+Full Name: Henry Nguyen
 
-- **Decimal integers** (`decinteger`, including multiple leading zeros)
-- **Octal integers** (`0o` / `0O` prefix)
-- **Hexadecimal integers** (`0x` / `0X` prefix)
-- **Floating-point literals** (`floatnumber` – extra credit)
+Tasks Completed:
 
-The checker is implemented using an NFA model in code (for integers) and a
-separate float parser that follows the Python grammar for `floatnumber`.
+Designed & implemented decinteger NFA
 
----
+Designed & implemented octinteger NFA
 
-## How to Run
+Designed & implemented hexinteger NFA
 
-You need **Python 3** installed.
+Created pt12nfa.jff
 
-### 1. Interactive mode
+Tested integer NFAs in JFLAP and provided screenshots
 
-```bash
-python pt12.py
+Helped verify integer behavior with test cases
 
-This project includes an extra-credit extension that adds full support for recognizing Python floating-point literals according to the Python 3 lexical specification.
-This portion of the project was implemented by Hoai Nam Nguyen.
+Hoai Nam Nguyen
+
+Full Name: Hoai Nam Nguyen
+
+Tasks Completed:
+
+Implemented full floating-point NFA (floatnumber.jff + PNG)
+
+Integrated FP logic into final program
+
+Updated README, organized project files
+
+Created extended test suite for FP literals
+
+Helped implement combined integer/float recognizer
+
+An external helper came to our help in checking our code organization. 
+and to assist us in re-writing and to structure the README document. 
+The group members made all the NFA designs, testing and final implementation decisions.
+Once the project requirements have been learnt fully.
+
+Project Description:
+
+This project implements a recognizer for Python numerical literals following the Python 3 lexical specification:
+
+    -decinteger
+
+    -octinteger
+
+    -hexinteger
+
+    -floatnumber (extra credit)
+
+All literal types use NFAs designed in JFLAP, with a Python implementation that simulates each NFA using transition tables.
+
+Project Structure:
+
+numeric_literal_checker.py       renamed from pt12.py
+in_ans.txt                   test input + expected result
+out.txt                      output produced by program
+README.md                    documentation
+
+nfa_integer:
+pt12nfa.jff
+pt12nfa.png
+
+nfa_float:
+floatnumber.jff
+ floatnumber.png
+
+Testing Instructions: run python numeric_literal_checker.py in_ans.txt out.txt
+
+This produces:
+
+Actual result
+
+Expected result
+
+Type (dec/octal/hex/float)
+
+PASS/FAIL
+
+
+NFA Files Included:
+Integer NFA
+    -pt12nfa.jff
+    -pt12nfa.png
+
+Covers:
+    -decimal
+
+    -octal
+
+    -hexadecimal
+
+Floating-Point NFA
+    -floatnumber.jff
+    -floatnumber.png
+
+Covers:
+
+    -digitpart "." [digitpart] [exponent]
+
+    -"." digitpart [exponent]
+
+    -digitpart exponent
+
+    -Optional + / - in exponent
+
+
+
+
+
+
+
+
