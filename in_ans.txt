@@ -1,110 +1,43 @@
-# Python Numeric Literal Test Cases
-# Format: input_string expected_result (accept/reject)
-
-# Decimal integers (Part 1)
-0 accept
-1 accept
-9 accept
-10 accept
-99 accept
-123 accept
-456789 accept
-1234567890 accept
-00 accept
-000 accept
-
-# Invalid decimal - leading zero with non-zero digit
-01 reject
-012 reject
-0123 reject
-09 reject
-
-# Octal integers (Part 2)
-0o0 accept
-0o1 accept
-0o7 accept
-0o10 accept
-0o77 accept
-0o123 accept
-0o777 accept
-0O0 accept
-0O7 accept
-0O77 accept
-
-# Invalid octal
-0o reject
-0O reject
-0o8 reject
-0o9 reject
-0oabc reject
-0o18 reject
-
-# Hexadecimal integers (Part 2)
-0x0 accept
-0x1 accept
-0x9 accept
-0xa accept
-0xf accept
-0xA accept
-0xF accept
-0x10 accept
-0xff accept
-0xFF accept
-0xAB accept
-0xDeadBeef accept
-0xCAFE accept
-0X0 accept
-0X1 accept
-0XFF accept
-
-# Invalid hexadecimal
-0x reject
-0X reject
-0xg reject
-0xG reject
-0x1g reject
-
-# Edge cases
-123456789012345678901234567890 accept
-0x123456789ABCDEF accept
-0o01234567 accept
-
-# Invalid inputs (still invalid even after adding floats)
-abc reject
--1 reject
-+1 reject
-0b101 reject
-0b0 reject
-reject
-x123 reject
-o123 reject
-
-# Floating-point literals (Extra part)
-
-# Valid floats
-1.0 accept
-1. accept
-.5 accept
-0.5 accept
-10.0 accept
-123.456 accept
-0.0001 accept
-1e10 accept
-1e0 accept
-1E10 accept
-1.5e3 accept
-1.5e-3 accept
-1.E+3 accept
-0.5e-2 accept
-.25e4 accept
-
-# Invalid floats
-. reject
-1e reject
-e10 reject
-1._0 reject
-1__0 reject
-._5 reject
-+.5 reject
--1.0 reject
-1.0.0 reject
+0
+00
+09
+456789
+9876543210
+1
+9
+10
+99
+123
+000123
+012
+00a
+-1
+0o1
+0o7
+0o755
+0O123
+0o8
+0o9
+0o128
+0x1
+0xA
+0xF5
+0XdeadBEef
+0xG
+0xZ
+0x123H
+1.0
+0.5
+10.234
+.25
+5.
+.5
+1e3
+1E10
+1.5e-3
+10.e5
+0.25E+7
+1e
+1e--3
+1e3.5
+1.2.3
